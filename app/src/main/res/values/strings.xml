@@ -3,4 +3,16 @@
     <string name="title_home">Home</string>
     <string name="title_dashboard">Dashboard</string>
     <string name="title_notifications">Notifications</string>
+
+
+    // login screen
+    <string name="login">Login</string>
+
+    // sign up
+    <string name="sign_up">Sign Up</string>
+    <string name="user">Patient</string>
+    <string name="doctor">Doctor</string>
+    <string name="pharmacist">Pharmacist</string>
+    <string name="type_of_user">Type of User</string>
+    <string name="new_sign_up">Sign Up ?</string>
 </resources>
