@@ -12,7 +12,10 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.pharmeasy.R;
+import com.pharmeasy.ui.home.MainActivity;
 import com.pharmeasy.ui.signup.SignUpActivity;
 
 /**
@@ -44,7 +47,18 @@ public class LoginFragment extends Fragment implements View.OnClickListener{
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        initUser();
         initViews();
+    }
+
+    private void initUser(){
+        FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
+        if(currentUser!=null)
+        {
+            Intent intent = new Intent(getActivity(), MainActivity.class);
+            startActivity(intent);
+            getActivity().finish();
+        }
     }
 
     private EditText mUserNameET;
@@ -83,5 +97,10 @@ public class LoginFragment extends Fragment implements View.OnClickListener{
     private void onNewSignUpClicked(){
         Intent intent = new Intent(getActivity(), SignUpActivity.class);
         startActivity(intent);
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
     }
 }

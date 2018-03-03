@@ -17,6 +17,14 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+    packagingOptions {
+        exclude 'META-INF/rxjava.properties'
+    }
 }
 
 dependencies {
@@ -27,9 +35,12 @@ dependencies {
     implementation 'com.android.support:support-vector-drawable:26.1.0'
     implementation 'de.hdodenhof:circleimageview:2.2.0'
 
-    implementation 'com.google.firebase:firebase-auth:11.0.0'
-    implementation 'com.google.firebase:firebase-database:11.0.0'
-    implementation 'com.google.firebase:firebase-messaging:11.0.0'
+    implementation "com.google.firebase:firebase-auth:$rootProject.firebaseVersion"
+    implementation "com.google.firebase:firebase-database:$rootProject.firebaseVersion"
+    implementation "com.google.firebase:firebase-messaging:$rootProject.firebaseVersion"
+
+    implementation "io.reactivex.rxjava2:rxjava:$rootProject.rxjavaVersion"
+    implementation "io.reactivex.rxjava2:rxandroid:$rootProject.rxandroidVersion"
 
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'com.android.support.test:runner:1.0.1'
@@ -37,3 +48,5 @@ dependencies {
 
 
 }
+apply plugin: 'com.google.gms.google-services'
+
