@@ -12,6 +12,7 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.pharmeasy.database.Tables;
 import com.pharmeasy.models.User;
 import com.pharmeasy.ui.home.MainActivity;
 
@@ -43,13 +44,6 @@ public class SignUpRepository {
     public Single<User> signUp(final String username, final String password) {
         mAuth = FirebaseAuth.getInstance();
         final String email = username+ "@pharmeasy.com";
-
-//        final Single<User> singleUser = new Single<User>() {
-//            @Override
-//            protected void subscribeActual(SingleObserver<? super User> observer) {
-//
-//            }
-//        };
         Single<User> user = Single.create(new SingleOnSubscribe<User>() {
             @Override
             public void subscribe(SingleEmitter<User> e) throws Exception {
@@ -63,7 +57,8 @@ public class SignUpRepository {
                                     User user = new User();
                                     user.setName(username);
                                     user.setUid(firebaseUser.getUid());
-                                    mDatabase.child("users").child(firebaseUser.getUid()).setValue(user);
+                                    mDatabase.child(Tables.USERS).child(firebaseUser.getUid())
+                                            .setValue (user);
                                     e.onSuccess(user);
                                 } else {
                                     e.onError(task.getException());

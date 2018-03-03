@@ -11,6 +11,9 @@ import android.widget.TextView;
 
 import com.pharmeasy.R;
 import com.pharmeasy.ui.signup.SignUpActivity;
+import com.pharmeasy.ui.signup.SignUpFragment;
+import com.pharmeasy.ui.signup.SignUpPresenter;
+import com.pharmeasy.ui.signup.SignUpRepository;
 import com.pharmeasy.utils.ActivityUtils;
 
 /**
@@ -23,6 +26,15 @@ public class LoginActivity extends AppCompatActivity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_fragment_container);
-        ActivityUtils.showFragment(getSupportFragmentManager(), R.id.frameLayout, LoginFragment.newInstance());
+        initViews();
+    }
+
+    private LoginPresenter mPresenter;
+    private LoginFragment mLoginFragment;
+    private void initViews(){
+        mLoginFragment = LoginFragment.newInstance();
+        ActivityUtils.showFragment(getSupportFragmentManager(), R.id.frameLayout, mLoginFragment);
+        mPresenter = new LoginPresenter(LoginRepository.getInstance(), mLoginFragment);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
     }
 }

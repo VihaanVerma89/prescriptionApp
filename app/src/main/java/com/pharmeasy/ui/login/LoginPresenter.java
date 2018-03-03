@@ -1,7 +1,9 @@
-package com.pharmeasy.ui.signup;
+package com.pharmeasy.ui.login;
 
-import io.reactivex.CompletableSource;
-import io.reactivex.Scheduler;
+import com.pharmeasy.ui.signup.SignUpContract;
+import com.pharmeasy.ui.signup.SignUpFragment;
+import com.pharmeasy.ui.signup.SignUpRepository;
+
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.disposables.Disposable;
@@ -11,14 +13,14 @@ import io.reactivex.schedulers.Schedulers;
  * Created by vihaanverma on 03/03/18.
  */
 
-public class SignUpPresenter implements SignUpContract.Presenter {
+public class LoginPresenter implements LoginContract.Presenter {
 
 
-    private SignUpContract.View mView;
-    private SignUpRepository mRepository;
+    private LoginContract.View mView;
+    private LoginRepository mRepository;
     private CompositeDisposable mCompositeDisposable;
 
-    public SignUpPresenter(SignUpRepository repository, SignUpFragment view) {
+    public LoginPresenter(LoginRepository repository, LoginContract.View view) {
         mRepository = repository;
         mView = view;
         mView.setPresenter(this);
@@ -31,16 +33,16 @@ public class SignUpPresenter implements SignUpContract.Presenter {
     }
 
     @Override
-    public void signUp(String username, String password) {
+    public void login(String username, String password) {
 
-       Disposable disposable =  mRepository.signUp(username, password)
+       Disposable disposable =  mRepository.login(username, password)
                .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(user -> {
                     mView.setUser(user);
                         },
                         exception -> {
-                    mView.signUpException(exception);
+                    mView.loginException(exception);
                         });
        mCompositeDisposable.add(disposable);
     }

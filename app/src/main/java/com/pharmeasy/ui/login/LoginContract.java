@@ -1,4 +1,4 @@
-package com.pharmeasy.ui.signup;
+package com.pharmeasy.ui.login;
 
 import com.pharmeasy.models.User;
 import com.pharmeasy.ui.BasePresenter;
@@ -8,17 +8,17 @@ import com.pharmeasy.ui.BaseView;
  * Created by vihaanverma on 03/03/18.
  */
 
-public interface SignUpContract {
+public interface LoginContract {
 
     interface View extends BaseView<Presenter>{
 
         void setUser(User user);
 
-        void signUpException(Throwable exception);
+        void loginException(Throwable exception);
     }
 
     interface Presenter extends BasePresenter{
 
-        void signUp(String username, String password);
+        void login(String username, String password);
     }
 }

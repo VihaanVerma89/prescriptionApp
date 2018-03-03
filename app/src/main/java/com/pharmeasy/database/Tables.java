@@ -5,4 +5,6 @@ package com.pharmeasy.database;
  */
 
 public class Tables {
+    public static final String USERS = "users";
+    public static final String USERS_PRESCRIPTIONS = "users-prescriptions";
 }

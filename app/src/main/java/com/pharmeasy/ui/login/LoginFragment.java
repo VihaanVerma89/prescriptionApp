@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.support.annotation.ColorInt;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,6 +16,7 @@ import android.widget.TextView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.pharmeasy.R;
+import com.pharmeasy.models.User;
 import com.pharmeasy.ui.home.MainActivity;
 import com.pharmeasy.ui.signup.SignUpActivity;
 
@@ -22,7 +24,7 @@ import com.pharmeasy.ui.signup.SignUpActivity;
  * Created by vihaanverma on 03/03/18.
  */
 
-public class LoginFragment extends Fragment implements View.OnClickListener{
+public class LoginFragment extends Fragment implements View.OnClickListener , LoginContract.View{
 
     public static LoginFragment newInstance() {
         Bundle args = new Bundle();
@@ -67,10 +69,10 @@ public class LoginFragment extends Fragment implements View.OnClickListener{
     private TextView mNewSignUpTV;
 
     private void initViews() {
-        mUserNameET = (EditText)getView().findViewById( R.id.userNameET );
-        mPasswordET = (EditText)getView().findViewById( R.id.passwordET );
-        mLoginBTN = (Button)getView().findViewById( R.id.loginBTN );
-        mNewSignUpTV = (TextView)getView().findViewById( R.id.newSignUpTV );
+        mUserNameET = getView().findViewById( R.id.userNameET );
+        mPasswordET = getView().findViewById( R.id.passwordET );
+        mLoginBTN = getView().findViewById( R.id.loginBTN );
+        mNewSignUpTV = getView().findViewById( R.id.newSignUpTV );
 
         mLoginBTN.setOnClickListener( this );
         mNewSignUpTV.setOnClickListener(this);
@@ -92,6 +94,12 @@ public class LoginFragment extends Fragment implements View.OnClickListener{
 
     private void onLoginClicked(){
 
+        String username = mUserNameET.getText().toString();
+        String password = mPasswordET.getText().toString();
+        if(!TextUtils.isEmpty(username) && !TextUtils.isEmpty(password))
+        {
+            mPresenter.login(username, password);
+        }
     }
 
     private void onNewSignUpClicked(){
@@ -99,8 +107,28 @@ public class LoginFragment extends Fragment implements View.OnClickListener{
         startActivity(intent);
     }
 
+
+
     @Override
-    public void onStart() {
-        super.onStart();
+    public void setUser(User user) {
+        Intent intent = new Intent(getActivity(), MainActivity.class);
+        startActivity(intent);
+    }
+
+    @Override
+    public void loginException(Throwable exception) {
+
+    }
+
+    private LoginContract.Presenter mPresenter;
+    @Override
+    public void setPresenter(LoginContract.Presenter presenter) {
+        mPresenter=presenter;
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        mPresenter.unsubscribe();
     }
 }

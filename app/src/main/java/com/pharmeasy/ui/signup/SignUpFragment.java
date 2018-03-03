@@ -74,18 +74,17 @@ public class SignUpFragment extends Fragment implements View.OnClickListener, Si
         String userName = mUserNameET.getText().toString();
         String password = mPasswordET.getText().toString();
 
-        if(!TextUtils.isEmpty(userName) && !TextUtils.isEmpty(password))
-        {
+        if (!TextUtils.isEmpty(userName) && !TextUtils.isEmpty(password)) {
             mPresenter.signUp(userName, password);
-        }else {
+        } else {
             Toast.makeText(getActivity(), "Please enter Username & Password", Toast.LENGTH_SHORT)
                     .show();
         }
     }
 
 
-
     private SignUpContract.Presenter mPresenter;
+
     @Override
     public void setPresenter(SignUpContract.Presenter presenter) {
         mPresenter = presenter;
@@ -102,5 +101,11 @@ public class SignUpFragment extends Fragment implements View.OnClickListener, Si
     public void signUpException(Throwable exception) {
         String message = exception.getMessage();
         Toast.makeText(getActivity(), message, Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        mPresenter.unsubscribe();
     }
 }
