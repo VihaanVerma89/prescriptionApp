@@ -1,9 +1,6 @@
 package com.pharmeasy.ui.prescription;
 
 import com.pharmeasy.models.Prescription;
-import com.pharmeasy.ui.home.PrescriptionRequestsFragment;
-import com.pharmeasy.ui.login.LoginContract;
-import com.pharmeasy.ui.login.LoginRepository;
 
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.CompositeDisposable;

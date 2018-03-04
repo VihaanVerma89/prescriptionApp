@@ -10,4 +10,5 @@ public class Tables {
     public static final String USERS_PRESCRIPTION_REQUESTS = "users-prescription-requests";
 
     public static final String DOCTORS= "doctors";
+    public static final String DOCTORS_PRESCRIPTIONS= "doctors-prescriptions";
 }

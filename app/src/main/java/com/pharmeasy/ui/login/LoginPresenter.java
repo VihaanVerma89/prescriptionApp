@@ -1,8 +1,7 @@
 package com.pharmeasy.ui.login;
 
-import com.pharmeasy.ui.signup.SignUpContract;
-import com.pharmeasy.ui.signup.SignUpFragment;
-import com.pharmeasy.ui.signup.SignUpRepository;
+import com.pharmeasy.models.Doctor;
+import com.pharmeasy.models.User;
 
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.CompositeDisposable;
@@ -35,16 +34,20 @@ public class LoginPresenter implements LoginContract.Presenter {
     @Override
     public void login(String username, String password) {
 
-       Disposable disposable =  mRepository.login(username, password)
-               .subscribeOn(Schedulers.io())
+        Disposable disposable = mRepository.login(username, password)
+                .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(user -> {
-                    mView.setUser(user);
+                .subscribe(object -> {
+                            if (object instanceof User) {
+                                mView.setUser((User) object);
+                            } else if (object instanceof Doctor) {
+                                mView.setDoctor((Doctor) object);
+                            }
                         },
                         exception -> {
-                    mView.loginException(exception);
+                            mView.loginException(exception);
                         });
-       mCompositeDisposable.add(disposable);
+        mCompositeDisposable.add(disposable);
     }
 
     @Override

@@ -42,7 +42,10 @@ dependencies {
     implementation "io.reactivex.rxjava2:rxjava:$rootProject.rxjavaVersion"
     implementation "io.reactivex.rxjava2:rxandroid:$rootProject.rxandroidVersion"
 
-    compile 'org.parceler:parceler-api:1.1.9'
+    implementation 'com.google.code.gson:gson:2.8.2'
+
+
+    implementation 'org.parceler:parceler-api:1.1.9'
     annotationProcessor 'org.parceler:parceler:1.1.9'
 
     testImplementation 'junit:junit:4.12'

@@ -1,5 +1,6 @@
 package com.pharmeasy.ui.login;
 
+import com.pharmeasy.models.Doctor;
 import com.pharmeasy.models.User;
 import com.pharmeasy.ui.BasePresenter;
 import com.pharmeasy.ui.BaseView;
@@ -11,9 +12,8 @@ import com.pharmeasy.ui.BaseView;
 public interface LoginContract {
 
     interface View extends BaseView<Presenter>{
-
         void setUser(User user);
-
+        void setDoctor(Doctor doctor);
         void loginException(Throwable exception);
     }
 

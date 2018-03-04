@@ -17,9 +17,11 @@ import android.widget.Toast;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.pharmeasy.R;
+import com.pharmeasy.models.Doctor;
 import com.pharmeasy.models.User;
 import com.pharmeasy.ui.home.MainActivity;
 import com.pharmeasy.ui.signup.SignUpActivity;
+import com.pharmeasy.utils.SessionUtil;
 
 import org.parceler.Parcels;
 
@@ -60,8 +62,20 @@ public class LoginFragment extends Fragment implements View.OnClickListener , Lo
         FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
         if(currentUser!=null)
         {
-            Intent intent = new Intent(getActivity(), MainActivity.class);
-            startActivity(intent);
+            User user = SessionUtil.getLoggedInUser(getActivity());
+            Doctor doctor = SessionUtil.getLoggedInDoctor(getActivity());
+            Bundle bundle = new Bundle();
+            if(user!=null)
+            {
+                bundle.putParcelable(MainActivity.EXTRA_USER, Parcels.wrap(user));
+                startMainActivity(bundle);
+            }
+            else if(doctor!=null)
+            {
+                bundle.putParcelable(MainActivity.EXTRA_DOCTOR, Parcels.wrap(doctor));
+                startMainActivity(bundle);
+            }
+
             getActivity().finish();
         }
     }
@@ -114,13 +128,29 @@ public class LoginFragment extends Fragment implements View.OnClickListener , Lo
 
     @Override
     public void setUser(User user) {
-        Intent intent = new Intent(getActivity(), MainActivity.class);
+        SessionUtil.saveLoggedInUser(getActivity(), user);
+        SessionUtil.clearLoggedInDoctor(getActivity());
         Bundle bundle = new Bundle();
         bundle.putParcelable(MainActivity.EXTRA_USER, Parcels.wrap(user));
-        intent.putExtras(bundle);
-        startActivity(intent);
+        startMainActivity(bundle);
     }
 
+    @Override
+    public void setDoctor(Doctor doctor) {
+        SessionUtil.saveLoggedInDoctor(getActivity(), doctor);
+        SessionUtil.clearLoggedInUser(getActivity());
+        Bundle bundle = new Bundle();
+        bundle.putParcelable(MainActivity.EXTRA_DOCTOR, Parcels.wrap(doctor));
+        startMainActivity(bundle);
+    }
+
+    private void startMainActivity(Bundle bundle)
+    {
+        Intent intent = new Intent(getActivity(), MainActivity.class);
+        intent.putExtras(bundle);
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        startActivity(intent);
+    }
     @Override
     public void loginException(Throwable exception) {
         String message = exception.getMessage();

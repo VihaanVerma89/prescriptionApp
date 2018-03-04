@@ -1,13 +1,19 @@
 package com.pharmeasy.ui.home;
 
+import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
+import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.gson.Gson;
 import com.pharmeasy.R;
 import com.pharmeasy.models.Doctor;
 import com.pharmeasy.models.User;
@@ -18,6 +24,11 @@ import com.pharmeasy.ui.home.doctor.prescriptionlist.DoctorPrescriptionListFragm
 import com.pharmeasy.ui.home.user.prescriptionList.PrescriptionListPresenter;
 import com.pharmeasy.ui.home.user.prescriptionList.PrescriptionListRepository;
 import com.pharmeasy.ui.home.user.prescriptionList.PrescriptionsListFragment;
+import com.pharmeasy.ui.home.user.prescriptionRequest.PrescriptionRequestsFragment;
+import com.pharmeasy.ui.home.user.prescriptionRequest.PrescriptionRequestsPresenter;
+import com.pharmeasy.ui.home.user.prescriptionRequest.PrescriptionRequestsRepository;
+import com.pharmeasy.ui.login.LoginActivity;
+import com.pharmeasy.utils.SessionUtil;
 
 import org.parceler.Parcels;
 
@@ -38,18 +49,19 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        initBundle();
+        initSession();
         initViews();
     }
 
-    private void initBundle() {
+    private void initSession() {
         Bundle bundle = getIntent().getExtras();
         if (bundle != null) {
-
             if (bundle.containsKey(EXTRA_USER)) {
                 mUser = Parcels.unwrap(bundle.getParcelable(EXTRA_USER));
+//                SessionUtil.saveLoggedInUser(this, mUser);
             } else if (bundle.containsKey(EXTRA_DOCTOR)) {
                 mDoctor = Parcels.unwrap(bundle.getParcelable(EXTRA_DOCTOR));
+//                SessionUtil.saveLoggedInDoctor(this, mDoctor);
             }
         }
     }
@@ -123,23 +135,32 @@ public class MainActivity extends AppCompatActivity {
         } else if (mDoctor != null) {
             fragments = getDoctorFragments();
         }
-        fragments = getDoctorFragments();
-
         return fragments;
     }
 
 
     private List<Fragment> mFragments = new ArrayList<>();
     private PrescriptionListPresenter mPrescriptionListPresenter;
+    private PrescriptionRequestsPresenter mPrescriptionRequestsPresenter;
 
     private List<Fragment> getUserFragments() {
         PrescriptionsListFragment prescriptionsListFragment = PrescriptionsListFragment
                 .newInstance();
         mFragments.add(prescriptionsListFragment);
-        mFragments.add(PrescriptionRequestsFragment.newInstance());
+
+        PrescriptionRequestsFragment prescriptionRequestsFragment = PrescriptionRequestsFragment.newInstance();
+        mFragments.add(prescriptionRequestsFragment);
+
+
+        PrescriptionRequestsRepository.getInstance().setUser(mUser);
+
+        mPrescriptionRequestsPresenter = new PrescriptionRequestsPresenter
+                (PrescriptionRequestsRepository.getInstance(),prescriptionRequestsFragment);
 
         mPrescriptionListPresenter = new PrescriptionListPresenter(PrescriptionListRepository
                 .getInstance(), prescriptionsListFragment);
+
+
         return mFragments;
     }
 
@@ -149,8 +170,10 @@ public class MainActivity extends AppCompatActivity {
     private List<Fragment> getDoctorFragments() {
 
         PatientListFragment patientListFragment = PatientListFragment.newInstance();
+
         mDoctor = new Doctor("doc1", "GXrNxnxnexgp6CHSilQEHl83cEw1");
         PatientListRepository.getInstance().setDoctor(mDoctor);
+
         mPatientListPresenter = new PatientListPresenter(PatientListRepository.getInstance(),
                 patientListFragment);
 
@@ -159,4 +182,27 @@ public class MainActivity extends AppCompatActivity {
         mFragments.add(patientListFragment);
         return mFragments;
     }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.menu_main_activity, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // Handle item selection
+        switch (item.getItemId()) {
+            case R.id.logout:
+                SessionUtil.logout(this);
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+    }
+
+
+
+
 }
