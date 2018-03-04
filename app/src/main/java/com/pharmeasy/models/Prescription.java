@@ -7,6 +7,9 @@ package com.pharmeasy.models;
 public class Prescription {
     String name, detail;
 
+    public Prescription(){
+
+    }
     public Prescription(String name, String detail) {
         this.name = name;
         this.detail = detail;

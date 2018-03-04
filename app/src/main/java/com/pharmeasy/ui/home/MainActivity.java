@@ -10,6 +10,10 @@ import android.view.MenuItem;
 import android.widget.TextView;
 
 import com.pharmeasy.R;
+import com.pharmeasy.models.Prescription;
+import com.pharmeasy.ui.home.prescriptionList.PrescriptionListPresenter;
+import com.pharmeasy.ui.home.prescriptionList.PrescriptionListRepository;
+import com.pharmeasy.ui.home.prescriptionList.PrescriptionsListFragment;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -90,11 +94,17 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private List<Fragment> mFragments;
+    private PrescriptionListPresenter mPrescriptionListPresenter;
 
     private List<Fragment> getFragments() {
         mFragments = new ArrayList<Fragment>();
-        mFragments.add(PrescriptionsListFragment.newInstance());
+        PrescriptionsListFragment prescriptionsListFragment = PrescriptionsListFragment
+                .newInstance();
+        mFragments.add(prescriptionsListFragment);
         mFragments.add(PrescriptionRequestsFragment.newInstance());
+
+        mPrescriptionListPresenter = new PrescriptionListPresenter(PrescriptionListRepository
+                .getInstance(), prescriptionsListFragment);
         return mFragments;
     }
 

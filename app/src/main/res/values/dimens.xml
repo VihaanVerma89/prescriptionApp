@@ -6,4 +6,8 @@
     <dimen name="margin_x">5dp</dimen>
     <dimen name="margin_xx">10dp</dimen>
     <dimen name="margin_xxx">26dp</dimen>
+
+    <dimen name="padding_x">5dp</dimen>
+    <dimen name="padding_xx">10dp</dimen>
+    <dimen name="padding_xxx">20dp</dimen>
 </resources>

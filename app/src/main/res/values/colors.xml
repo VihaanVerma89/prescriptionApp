@@ -5,4 +5,9 @@
     <color name="colorAccent">#79b37b</color>
 
     <color name="fabRipple">#afd1b0</color>
+
+
+    <color name="view_separator">#2faaaaaa</color>
+    <color name="white_opaque">#FFFFFFFF</color>
+
 </resources>
