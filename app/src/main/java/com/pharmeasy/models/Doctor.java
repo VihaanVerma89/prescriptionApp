@@ -9,6 +9,15 @@ import org.parceler.Parcel;
 @Parcel
 public class Doctor {
 
+    public Doctor() {
+
+    }
+
+    public Doctor(String name, String uid) {
+        this.name = name;
+        this.uid = uid;
+    }
+
     public String name = "";
     public String uid = "";
 

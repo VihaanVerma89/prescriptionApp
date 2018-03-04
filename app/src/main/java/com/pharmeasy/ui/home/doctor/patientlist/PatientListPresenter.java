@@ -1,9 +1,13 @@
 package com.pharmeasy.ui.home.doctor.patientlist;
 
+import com.pharmeasy.models.Doctor;
+import com.pharmeasy.models.User;
 import com.pharmeasy.ui.home.user.prescriptionList.PrescriptionListContract;
 import com.pharmeasy.ui.home.user.prescriptionList.PrescriptionListRepository;
 import com.pharmeasy.ui.home.user.prescriptionList.PrescriptionsListFragment;
 
+import io.reactivex.CompletableObserver;
+import io.reactivex.Scheduler;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.disposables.Disposable;
@@ -41,6 +45,30 @@ public class PatientListPresenter implements PatientListContract.Presenter {
                         });
 
         mCompositeDisposable.add(disposable);
+    }
+
+    @Override
+    public void requestPrescription(Doctor doctor, User user) {
+
+        mRepository.requestPrescription(doctor,user)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new CompletableObserver() {
+                    @Override
+                    public void onSubscribe(Disposable d) {
+                        mCompositeDisposable.add(d);
+                    }
+
+                    @Override
+                    public void onComplete() {
+                        mView.onPatientRequestSuccess();
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        mView.onPatientException(e);
+                    }
+                });
     }
 
     @Override

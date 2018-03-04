@@ -22,7 +22,9 @@ import java.util.List;
  * Created by vihaanverma on 04/03/18.
  */
 
-public class PatientListFragment extends Fragment implements PatientListContract.View{
+public class PatientListFragment extends Fragment
+        implements PatientListContract.View, PatientListAdapter.PatientListener
+{
 
     public static PatientListFragment newInstance() {
 
@@ -59,7 +61,7 @@ public class PatientListFragment extends Fragment implements PatientListContract
     private void initRecyclerView() {
         mRecyclerView = getView().findViewById(R.id.patientsRecyclerView);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
-        mAdapter = new PatientListAdapter(getContext(), mPatients);
+        mAdapter = new PatientListAdapter(getContext(), mPatients, this);
         mRecyclerView.setAdapter(mAdapter);
     }
 
@@ -75,6 +77,17 @@ public class PatientListFragment extends Fragment implements PatientListContract
         Toast.makeText(getActivity(), message, Toast.LENGTH_SHORT).show();
     }
 
+    @Override
+    public void onPatientRequestSuccess() {
+        Toast.makeText(getActivity(), "Request sent", Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void onPatientRequestException(Throwable exception) {
+        String message = exception.getMessage();
+        Toast.makeText(getActivity(), message, Toast.LENGTH_SHORT).show();
+    }
+
     private PatientListContract.Presenter mPresenter;
     @Override
     public void setPresenter(PatientListContract.Presenter presenter) {
@@ -85,6 +98,12 @@ public class PatientListFragment extends Fragment implements PatientListContract
     public void onDestroy() {
         super.onDestroy();
         mPresenter.unsubscribe();
+    }
+
+    @Override
+    public void onPatientClicked(int position) {
+        User user = mPatients.get(position);
+        mPresenter.requestPrescription(PatientListRepository.getInstance().getDoctor(), user);
     }
 }
 

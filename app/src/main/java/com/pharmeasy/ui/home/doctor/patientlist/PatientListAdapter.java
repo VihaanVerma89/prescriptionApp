@@ -5,6 +5,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.TextView;
 
 import com.pharmeasy.R;
@@ -12,6 +13,7 @@ import com.pharmeasy.models.Prescription;
 import com.pharmeasy.models.User;
 import com.pharmeasy.ui.home.user.prescriptionList.PrescriptionListAdapter;
 
+import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -24,9 +26,16 @@ class PatientListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     private List<User> mPatients;
     private Context mContext;
 
-    public PatientListAdapter(Context context, List<User> prescriptions) {
+    public interface PatientListener{
+        void onPatientClicked(int position);
+    }
+
+    private WeakReference<PatientListener> mPatientListenerRef;
+
+    public PatientListAdapter(Context context, List<User> prescriptions, PatientListener patientListener) {
         mContext = context;
         mPatients = prescriptions;
+        mPatientListenerRef = new WeakReference<PatientListener>(patientListener);
     }
 
     @Override
@@ -55,17 +64,22 @@ class PatientListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
             .OnClickListener {
 
         private TextView name, prescriptionCount;
+        private Button requestBtn;
 
         public PatientViewHolder(View itemView) {
             super(itemView);
             name = itemView.findViewById(R.id.nameTV);
             prescriptionCount = itemView.findViewById(R.id.prescriptionCountTV);
-            itemView.setOnClickListener(this);
+            requestBtn = itemView.findViewById(R.id.requestBTN);
+            requestBtn.setOnClickListener(this);
         }
 
         @Override
         public void onClick(View v) {
-
+            if(mPatientListenerRef.get()!=null)
+            {
+                mPatientListenerRef.get().onPatientClicked(getAdapterPosition());
+            }
         }
     }
 }

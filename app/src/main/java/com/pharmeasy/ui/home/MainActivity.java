@@ -149,6 +149,8 @@ public class MainActivity extends AppCompatActivity {
     private List<Fragment> getDoctorFragments() {
 
         PatientListFragment patientListFragment = PatientListFragment.newInstance();
+        mDoctor = new Doctor("doc1", "GXrNxnxnexgp6CHSilQEHl83cEw1");
+        PatientListRepository.getInstance().setDoctor(mDoctor);
         mPatientListPresenter = new PatientListPresenter(PatientListRepository.getInstance(),
                 patientListFragment);
 
