@@ -1,11 +1,8 @@
-package com.pharmeasy.ui.home.prescriptionList;
+package com.pharmeasy.ui.home.user.prescriptionList;
 
 import com.pharmeasy.models.Prescription;
-import com.pharmeasy.models.User;
 import com.pharmeasy.ui.BasePresenter;
 import com.pharmeasy.ui.BaseView;
-
-import java.util.List;
 
 /**
  * Created by vihaanverma on 03/03/18.
@@ -14,9 +11,7 @@ import java.util.List;
 public interface PrescriptionListContract {
 
     interface View extends BaseView<Presenter>{
-//        void onPrescriptionsSuccess(List<Prescription> prescriptions);
         void onPrescriptionAdded(Prescription prescription);
-//        void onPrescriptionsException(Throwable exception);
         void onPrescriptionException(Throwable exception);
     }
 

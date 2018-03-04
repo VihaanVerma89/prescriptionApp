@@ -1,4 +1,4 @@
-package com.pharmeasy.ui.home.prescriptionList;
+package com.pharmeasy.ui.home.user.prescriptionList;
 
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.schedulers.Schedulers;

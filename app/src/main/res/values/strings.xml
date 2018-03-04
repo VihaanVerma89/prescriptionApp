@@ -21,4 +21,9 @@
     <string name="hint_prescription_name">Enter prescription name</string>
     <string name="hint_prescription_detail">Enter prescription detail</string>
     <string name="save">Save</string>
+
+    // doctor menu
+    <string name="patients">Patients</string>
+    <string name="prescriptions">Prescriptions</string>
+
 </resources>

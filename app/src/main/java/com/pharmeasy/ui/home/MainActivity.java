@@ -7,27 +7,51 @@ import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.view.MenuItem;
-import android.widget.TextView;
 
 import com.pharmeasy.R;
-import com.pharmeasy.models.Prescription;
-import com.pharmeasy.ui.home.prescriptionList.PrescriptionListPresenter;
-import com.pharmeasy.ui.home.prescriptionList.PrescriptionListRepository;
-import com.pharmeasy.ui.home.prescriptionList.PrescriptionsListFragment;
+import com.pharmeasy.models.Doctor;
+import com.pharmeasy.models.User;
+import com.pharmeasy.ui.home.doctor.patientlist.PatientListFragment;
+import com.pharmeasy.ui.home.doctor.patientlist.PatientListPresenter;
+import com.pharmeasy.ui.home.doctor.patientlist.PatientListRepository;
+import com.pharmeasy.ui.home.doctor.prescriptionlist.DoctorPrescriptionListFragment;
+import com.pharmeasy.ui.home.user.prescriptionList.PrescriptionListPresenter;
+import com.pharmeasy.ui.home.user.prescriptionList.PrescriptionListRepository;
+import com.pharmeasy.ui.home.user.prescriptionList.PrescriptionsListFragment;
+
+import org.parceler.Parcels;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
 
-    private TextView mTextMessage;
+    public static final String EXTRA_USER = "user";
+    public static final String EXTRA_DOCTOR = "doctor";
+    public static final String EXTRA_PHARMACIST = "pharmacist";
+
+    private User mUser;
+    private Doctor mDoctor;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        initBundle();
         initViews();
+    }
+
+    private void initBundle() {
+        Bundle bundle = getIntent().getExtras();
+        if (bundle != null) {
+
+            if (bundle.containsKey(EXTRA_USER)) {
+                mUser = Parcels.unwrap(bundle.getParcelable(EXTRA_USER));
+            } else if (bundle.containsKey(EXTRA_DOCTOR)) {
+                mDoctor = Parcels.unwrap(bundle.getParcelable(EXTRA_DOCTOR));
+            }
+        }
     }
 
     private void initViews() {
@@ -37,6 +61,7 @@ public class MainActivity extends AppCompatActivity {
 
     private BottomNavigationView mBottomNavigationView;
     private MenuItem mPreviousMenuItem;
+
     private void initBottomNavigation() {
         mBottomNavigationView = findViewById(R.id.navigation);
         BottomNavigationView.OnNavigationItemSelectedListener onNavigationItemSelectedListener
@@ -76,9 +101,7 @@ public class MainActivity extends AppCompatActivity {
             public void onPageSelected(int position) {
                 if (mPreviousMenuItem != null) {
                     mPreviousMenuItem.setChecked(false);
-                }
-                else
-                {
+                } else {
                     mBottomNavigationView.getMenu().getItem(0).setChecked(false);
                 }
 
@@ -93,11 +116,23 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
-    private List<Fragment> mFragments;
+    private List<Fragment> getFragments() {
+        List<Fragment> fragments = null;
+        if (mUser != null) {
+            fragments = getUserFragments();
+        } else if (mDoctor != null) {
+            fragments = getDoctorFragments();
+        }
+        fragments = getDoctorFragments();
+
+        return fragments;
+    }
+
+
+    private List<Fragment> mFragments = new ArrayList<>();
     private PrescriptionListPresenter mPrescriptionListPresenter;
 
-    private List<Fragment> getFragments() {
-        mFragments = new ArrayList<Fragment>();
+    private List<Fragment> getUserFragments() {
         PrescriptionsListFragment prescriptionsListFragment = PrescriptionsListFragment
                 .newInstance();
         mFragments.add(prescriptionsListFragment);
@@ -108,4 +143,18 @@ public class MainActivity extends AppCompatActivity {
         return mFragments;
     }
 
+
+    private PatientListPresenter mPatientListPresenter;
+
+    private List<Fragment> getDoctorFragments() {
+
+        PatientListFragment patientListFragment = PatientListFragment.newInstance();
+        mPatientListPresenter = new PatientListPresenter(PatientListRepository.getInstance(),
+                patientListFragment);
+
+        DoctorPrescriptionListFragment doctorPrescriptionListFragment = DoctorPrescriptionListFragment.newInstance();
+        mFragments.add(doctorPrescriptionListFragment);
+        mFragments.add(patientListFragment);
+        return mFragments;
+    }
 }

@@ -12,6 +12,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -19,6 +20,8 @@ import com.pharmeasy.R;
 import com.pharmeasy.models.User;
 import com.pharmeasy.ui.home.MainActivity;
 import com.pharmeasy.ui.signup.SignUpActivity;
+
+import org.parceler.Parcels;
 
 /**
  * Created by vihaanverma on 03/03/18.
@@ -112,12 +115,16 @@ public class LoginFragment extends Fragment implements View.OnClickListener , Lo
     @Override
     public void setUser(User user) {
         Intent intent = new Intent(getActivity(), MainActivity.class);
+        Bundle bundle = new Bundle();
+        bundle.putParcelable(MainActivity.EXTRA_USER, Parcels.wrap(user));
+        intent.putExtras(bundle);
         startActivity(intent);
     }
 
     @Override
     public void loginException(Throwable exception) {
-
+        String message = exception.getMessage();
+        Toast.makeText(getActivity(), message, Toast.LENGTH_SHORT).show();
     }
 
     private LoginContract.Presenter mPresenter;

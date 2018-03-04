@@ -80,14 +80,14 @@
         android:layout_height="wrap_content"
         android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
+        android:layout_marginTop="20dp"
         android:text="@string/sign_up"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/userTypeRG" />
+        app:layout_constraintTop_toBottomOf="@+id/radioGroup" />
 
     <RadioGroup
-        android:id="@+id/userTypeRG"
+        android:id="@+id/radioGroup"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="8dp"
@@ -99,16 +99,20 @@
         app:layout_constraintTop_toBottomOf="@+id/textView">
 
         <RadioButton
+            android:id="@+id/patientRB"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:checked="true"
             android:text="@string/user" />
 
         <RadioButton
+            android:id="@+id/doctorRB"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/doctor" />
 
         <RadioButton
+            android:id="@+id/pharmacistRB"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/pharmacist" />

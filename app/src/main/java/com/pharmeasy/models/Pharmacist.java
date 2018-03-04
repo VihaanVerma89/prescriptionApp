@@ -1,16 +1,13 @@
 package com.pharmeasy.models;
 
-import org.parceler.Parcel;
-
 /**
  * Created by vihaanverma on 03/03/18.
  */
 
-@Parcel
-public class User {
+public class Pharmacist {
 
-    public String name = "";
-    public String uid = "";
+    private String name = "";
+    private String uid = "";
 
     public String getName() {
         return name;

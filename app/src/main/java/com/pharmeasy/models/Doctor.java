@@ -7,7 +7,7 @@ import org.parceler.Parcel;
  */
 
 @Parcel
-public class User {
+public class Doctor {
 
     public String name = "";
     public String uid = "";

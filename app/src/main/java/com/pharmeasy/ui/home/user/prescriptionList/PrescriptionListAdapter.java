@@ -1,4 +1,4 @@
-package com.pharmeasy.ui.home.prescriptionList;
+package com.pharmeasy.ui.home.user.prescriptionList;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;

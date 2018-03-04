@@ -33,5 +33,11 @@ public class PrescriptionActivity extends AppCompatActivity {
                 mPrescriptionFragment);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
     }
+
+    @Override
+    public boolean onSupportNavigateUp() {
+        onBackPressed();
+        return true;
+    }
 }
 

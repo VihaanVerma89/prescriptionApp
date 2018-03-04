@@ -1,26 +1,19 @@
-package com.pharmeasy.ui.home.prescriptionList;
+package com.pharmeasy.ui.home.user.prescriptionList;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
-import com.google.firebase.database.ValueEventListener;
 import com.pharmeasy.database.Tables;
 import com.pharmeasy.models.Prescription;
-import com.pharmeasy.models.User;
-import com.pharmeasy.ui.login.LoginRepository;
-
-import java.util.List;
 
 import io.reactivex.BackpressureStrategy;
 import io.reactivex.Flowable;
 import io.reactivex.FlowableEmitter;
 import io.reactivex.FlowableOnSubscribe;
-import io.reactivex.Single;
 
 /**
  * Created by vihaanverma on 03/03/18.

@@ -1,4 +1,4 @@
-package com.pharmeasy.ui.home.prescriptionList;
+package com.pharmeasy.ui.home.user.prescriptionList;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -10,7 +10,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -19,7 +19,6 @@ import com.pharmeasy.models.Prescription;
 import com.pharmeasy.ui.prescription.PrescriptionActivity;
 
 import java.util.ArrayList;
-import java.util.List;
 
 /**
  * Created by vihaanverma on 03/03/18.
@@ -111,6 +110,7 @@ public class PrescriptionsListFragment extends Fragment implements PrescriptionL
 
     @Override
     public void onPrescriptionException(Throwable exception) {
-
+        String message = exception.getMessage();
+        Toast.makeText(getActivity(), message, Toast.LENGTH_SHORT).show();
     }
 }

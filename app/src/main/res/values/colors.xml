@@ -7,7 +7,7 @@
     <color name="fabRipple">#afd1b0</color>
 
 
-    <color name="view_separator">#2faaaaaa</color>
+    <color name="view_separator">#2fcfcfcf</color>
     <color name="white_opaque">#FFFFFFFF</color>
 
 </resources>

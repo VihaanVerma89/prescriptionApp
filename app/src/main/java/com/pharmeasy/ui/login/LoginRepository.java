@@ -28,23 +28,23 @@ public class LoginRepository {
     public final String TAG = getClass().getName();
 
     private static LoginRepository INSTANCE = null;
-    public static LoginRepository getInstance(){
-        if(INSTANCE == null)
-        {
-           INSTANCE = new LoginRepository();
+
+    public static LoginRepository getInstance() {
+        if (INSTANCE == null) {
+            INSTANCE = new LoginRepository();
         }
         return INSTANCE;
     }
 
     private FirebaseAuth mAuth;
+
     public Single<User> login(final String username, final String password) {
         mAuth = FirebaseAuth.getInstance();
-        final String email = username+ "@pharmeasy.com";
-        Single<User> userSingle = Single.create( emitter -> {
+        final String email = username + "@pharmeasy.com";
+        Single<User> userSingle = Single.create(emitter -> {
             mAuth.signInWithEmailAndPassword(email, password)
-                    .addOnCompleteListener( task->{
-                        if(task.isSuccessful())
-                        {
+                    .addOnCompleteListener(task -> {
+                        if (task.isSuccessful()) {
                             FirebaseUser firebaseUser = task.getResult().getUser();
                             FirebaseDatabase.getInstance().getReference()
                                     .child(Tables.USERS)
@@ -61,11 +61,13 @@ public class LoginRepository {
                                         }
                                     });
                         }
+                        else{
+                            emitter.onError(task.getException());
+                        }
                     });
         });
         return userSingle;
     }
-
 
 
 }

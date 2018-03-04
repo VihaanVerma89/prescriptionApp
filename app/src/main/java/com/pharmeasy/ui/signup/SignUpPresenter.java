@@ -1,7 +1,5 @@
 package com.pharmeasy.ui.signup;
 
-import io.reactivex.CompletableSource;
-import io.reactivex.Scheduler;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.disposables.Disposable;
@@ -31,18 +29,37 @@ public class SignUpPresenter implements SignUpContract.Presenter {
     }
 
     @Override
-    public void signUp(String username, String password) {
+    public void signUpUser(String username, String password) {
 
-       Disposable disposable =  mRepository.signUp(username, password)
-               .subscribeOn(Schedulers.io())
+        Disposable disposable = mRepository.signUpUser(username, password)
+                .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(user -> {
-                    mView.setUser(user);
+                            mView.setUser(user);
                         },
                         exception -> {
-                    mView.signUpException(exception);
+                            mView.signUpException(exception);
                         });
-       mCompositeDisposable.add(disposable);
+        mCompositeDisposable.add(disposable);
+    }
+
+    @Override
+    public void signUpDoctor(String username, String password) {
+        Disposable disposable = mRepository.signUpDoctor(username, password)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(doctor -> {
+                            mView.setDoctor(doctor);
+                        },
+                        exception -> {
+                            mView.signUpException(exception);
+                        });
+        mCompositeDisposable.add(disposable);
+    }
+
+    @Override
+    public void signUpPharmacist(String username, String password) {
+
     }
 
     @Override
