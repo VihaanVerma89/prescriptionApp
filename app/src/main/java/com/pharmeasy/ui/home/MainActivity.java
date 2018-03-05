@@ -21,6 +21,8 @@ import com.pharmeasy.ui.home.doctor.patientlist.PatientListFragment;
 import com.pharmeasy.ui.home.doctor.patientlist.PatientListPresenter;
 import com.pharmeasy.ui.home.doctor.patientlist.PatientListRepository;
 import com.pharmeasy.ui.home.doctor.prescriptionlist.DoctorPrescriptionListFragment;
+import com.pharmeasy.ui.home.doctor.prescriptionlist.DoctorPrescriptionListPresenter;
+import com.pharmeasy.ui.home.doctor.prescriptionlist.DoctorPrescriptionListRepository;
 import com.pharmeasy.ui.home.user.prescriptionList.PrescriptionListPresenter;
 import com.pharmeasy.ui.home.user.prescriptionList.PrescriptionListRepository;
 import com.pharmeasy.ui.home.user.prescriptionList.PrescriptionsListFragment;
@@ -58,10 +60,8 @@ public class MainActivity extends AppCompatActivity {
         if (bundle != null) {
             if (bundle.containsKey(EXTRA_USER)) {
                 mUser = Parcels.unwrap(bundle.getParcelable(EXTRA_USER));
-//                SessionUtil.saveLoggedInUser(this, mUser);
             } else if (bundle.containsKey(EXTRA_DOCTOR)) {
                 mDoctor = Parcels.unwrap(bundle.getParcelable(EXTRA_DOCTOR));
-//                SessionUtil.saveLoggedInDoctor(this, mDoctor);
             }
         }
     }
@@ -166,18 +166,20 @@ public class MainActivity extends AppCompatActivity {
 
 
     private PatientListPresenter mPatientListPresenter;
+    private DoctorPrescriptionListPresenter mDoctorPrescriptionListPresenter;
 
     private List<Fragment> getDoctorFragments() {
 
         PatientListFragment patientListFragment = PatientListFragment.newInstance();
-
-        mDoctor = new Doctor("doc1", "GXrNxnxnexgp6CHSilQEHl83cEw1");
         PatientListRepository.getInstance().setDoctor(mDoctor);
-
         mPatientListPresenter = new PatientListPresenter(PatientListRepository.getInstance(),
                 patientListFragment);
 
         DoctorPrescriptionListFragment doctorPrescriptionListFragment = DoctorPrescriptionListFragment.newInstance();
+        DoctorPrescriptionListRepository.getInstance().setDoctor(mDoctor);
+        mDoctorPrescriptionListPresenter = new DoctorPrescriptionListPresenter
+                (DoctorPrescriptionListRepository.getInstance(), doctorPrescriptionListFragment);
+
         mFragments.add(doctorPrescriptionListFragment);
         mFragments.add(patientListFragment);
         return mFragments;
