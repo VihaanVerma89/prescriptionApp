@@ -73,7 +73,6 @@ public class PrescriptionRequestsRepository {
 
                             @Override
                             public void onCancelled(DatabaseError databaseError) {
-//                                emitter.onError(databaseError.toException());
                             }
                         });
                     }

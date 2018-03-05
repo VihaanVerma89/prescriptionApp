@@ -70,7 +70,6 @@ public class PrescriptionListRepository {
 
                                 @Override
                                 public void onCancelled(DatabaseError databaseError) {
-                                    emitter.onError(databaseError.toException());
                                 }
                             });
 

@@ -83,7 +83,6 @@ public class PatientListRepository {
 
                     @Override
                     public void onCancelled(DatabaseError databaseError) {
-                        emitter.onError(databaseError.toException());
                     }
                 });
             } else {
