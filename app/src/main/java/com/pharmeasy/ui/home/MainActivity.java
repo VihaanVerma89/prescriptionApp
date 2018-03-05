@@ -1,7 +1,5 @@
 package com.pharmeasy.ui.home;
 
-import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
@@ -12,8 +10,6 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.gson.Gson;
 import com.pharmeasy.R;
 import com.pharmeasy.models.Doctor;
 import com.pharmeasy.models.User;
@@ -29,7 +25,6 @@ import com.pharmeasy.ui.home.user.prescriptionList.PrescriptionsListFragment;
 import com.pharmeasy.ui.home.user.prescriptionRequest.PrescriptionRequestsFragment;
 import com.pharmeasy.ui.home.user.prescriptionRequest.PrescriptionRequestsPresenter;
 import com.pharmeasy.ui.home.user.prescriptionRequest.PrescriptionRequestsRepository;
-import com.pharmeasy.ui.login.LoginActivity;
 import com.pharmeasy.utils.SessionUtil;
 
 import org.parceler.Parcels;
@@ -76,15 +71,23 @@ public class MainActivity extends AppCompatActivity {
 
     private void initBottomNavigation() {
         mBottomNavigationView = findViewById(R.id.navigation);
+        if(mUser!=null)
+        {
+            mBottomNavigationView.inflateMenu(R.menu.navigation_user);
+        }
+        else if(mDoctor != null)
+        {
+            mBottomNavigationView.inflateMenu(R.menu.navigation_doctor);
+        }
         BottomNavigationView.OnNavigationItemSelectedListener onNavigationItemSelectedListener
                 = new BottomNavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
                 switch (item.getItemId()) {
-                    case R.id.navigation_home:
+                    case R.id.tab1:
                         mViewPager.setCurrentItem(0);
                         return true;
-                    case R.id.navigation_notifications:
+                    case R.id.tab2:
                         mViewPager.setCurrentItem(1);
                         return true;
                 }
