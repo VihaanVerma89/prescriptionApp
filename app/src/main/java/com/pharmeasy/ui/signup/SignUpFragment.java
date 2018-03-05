@@ -1,5 +1,6 @@
 package com.pharmeasy.ui.signup;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -19,6 +20,7 @@ import com.pharmeasy.models.Doctor;
 import com.pharmeasy.models.Pharmacist;
 import com.pharmeasy.models.User;
 import com.pharmeasy.ui.home.MainActivity;
+import com.pharmeasy.utils.ActivityUtils;
 
 import org.parceler.Parcels;
 
@@ -54,7 +56,7 @@ public class SignUpFragment extends Fragment implements View.OnClickListener, Si
     private EditText mPasswordET;
     private Button mSignUpBTN;
     private RadioGroup mRadioGroup;
-
+    private ProgressDialog mProgressDialog;
     private void initViews() {
         mUserNameET = getView().findViewById(R.id.userNameET);
         mPasswordET = getView().findViewById(R.id.passwordET);
@@ -82,8 +84,10 @@ public class SignUpFragment extends Fragment implements View.OnClickListener, Si
 
         if (!TextUtils.isEmpty(userName) && !TextUtils.isEmpty(password)) {
 
+            mProgressDialog = new ProgressDialog(getActivity());
             // get selected radio button from radioGroup
             int selectedId = mRadioGroup.getCheckedRadioButtonId();
+            ActivityUtils.showProgressDialog(mProgressDialog);
 
             // find the radiobutton by returned id
             RadioButton radioButton = (RadioButton) getView().findViewById(selectedId);
@@ -97,9 +101,9 @@ public class SignUpFragment extends Fragment implements View.OnClickListener, Si
                     mPresenter.signUpDoctor(userName, password);
                     break;
 
-                case R.id.pharmacistRB:
-                    mPresenter.signUpPharmacist(userName, password);
-                    break;
+//                case R.id.pharmacistRB:
+//                    mPresenter.signUpPharmacist(userName, password);
+//                    break;
             }
 
         } else {
@@ -120,6 +124,7 @@ public class SignUpFragment extends Fragment implements View.OnClickListener, Si
     public void setUser(User user) {
         Bundle bundle = new Bundle();
         bundle.putParcelable(MainActivity.EXTRA_USER, Parcels.wrap(user));
+        ActivityUtils.hideProgressDialog(mProgressDialog);
         startMainActivity(bundle);
     }
 
@@ -127,6 +132,7 @@ public class SignUpFragment extends Fragment implements View.OnClickListener, Si
     public void setDoctor(Doctor doctor) {
         Bundle bundle = new Bundle();
         bundle.putParcelable(MainActivity.EXTRA_DOCTOR, Parcels.wrap(doctor));
+        ActivityUtils.hideProgressDialog(mProgressDialog);
         startMainActivity(bundle);
     }
 
@@ -134,6 +140,7 @@ public class SignUpFragment extends Fragment implements View.OnClickListener, Si
     public void setPharmacist(Pharmacist pharmacist) {
         Bundle bundle = new Bundle();
         bundle.putParcelable(MainActivity.EXTRA_PHARMACIST, Parcels.wrap(pharmacist));
+        ActivityUtils.hideProgressDialog(mProgressDialog);
         startMainActivity(bundle);
     }
 
@@ -148,6 +155,7 @@ public class SignUpFragment extends Fragment implements View.OnClickListener, Si
     public void signUpException(Throwable exception) {
         String message = exception.getMessage();
         Toast.makeText(getActivity(), message, Toast.LENGTH_SHORT).show();
+        ActivityUtils.hideProgressDialog(mProgressDialog);
     }
 
     @Override

@@ -1,5 +1,7 @@
 package com.pharmeasy.ui.login;
 
+import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.ColorInt;
@@ -21,6 +23,7 @@ import com.pharmeasy.models.Doctor;
 import com.pharmeasy.models.User;
 import com.pharmeasy.ui.home.MainActivity;
 import com.pharmeasy.ui.signup.SignUpActivity;
+import com.pharmeasy.utils.ActivityUtils;
 import com.pharmeasy.utils.SessionUtil;
 
 import org.parceler.Parcels;
@@ -84,13 +87,12 @@ public class LoginFragment extends Fragment implements View.OnClickListener , Lo
     private EditText mPasswordET;
     private Button mLoginBTN;
     private TextView mNewSignUpTV;
-
+    private ProgressDialog mProgressDialog;
     private void initViews() {
         mUserNameET = getView().findViewById( R.id.userNameET );
         mPasswordET = getView().findViewById( R.id.passwordET );
         mLoginBTN = getView().findViewById( R.id.loginBTN );
         mNewSignUpTV = getView().findViewById( R.id.newSignUpTV );
-
         mLoginBTN.setOnClickListener( this );
         mNewSignUpTV.setOnClickListener(this);
     }
@@ -116,6 +118,12 @@ public class LoginFragment extends Fragment implements View.OnClickListener , Lo
         if(!TextUtils.isEmpty(username) && !TextUtils.isEmpty(password))
         {
             mPresenter.login(username, password);
+            mProgressDialog = new ProgressDialog(getActivity());
+            ActivityUtils.showProgressDialog(mProgressDialog);
+        }
+        else {
+            Toast.makeText(getActivity(), "Please enter Username & Password", Toast.LENGTH_SHORT)
+                    .show();
         }
     }
 
@@ -126,12 +134,14 @@ public class LoginFragment extends Fragment implements View.OnClickListener , Lo
 
 
 
+
     @Override
     public void setUser(User user) {
         SessionUtil.saveLoggedInUser(getActivity(), user);
         SessionUtil.clearLoggedInDoctor(getActivity());
         Bundle bundle = new Bundle();
         bundle.putParcelable(MainActivity.EXTRA_USER, Parcels.wrap(user));
+        ActivityUtils.hideProgressDialog(mProgressDialog);
         startMainActivity(bundle);
     }
 
@@ -141,6 +151,7 @@ public class LoginFragment extends Fragment implements View.OnClickListener , Lo
         SessionUtil.clearLoggedInUser(getActivity());
         Bundle bundle = new Bundle();
         bundle.putParcelable(MainActivity.EXTRA_DOCTOR, Parcels.wrap(doctor));
+        ActivityUtils.hideProgressDialog(mProgressDialog);
         startMainActivity(bundle);
     }
 
@@ -155,6 +166,7 @@ public class LoginFragment extends Fragment implements View.OnClickListener , Lo
     public void loginException(Throwable exception) {
         String message = exception.getMessage();
         Toast.makeText(getActivity(), message, Toast.LENGTH_SHORT).show();
+        ActivityUtils.hideProgressDialog(mProgressDialog);
     }
 
     private LoginContract.Presenter mPresenter;

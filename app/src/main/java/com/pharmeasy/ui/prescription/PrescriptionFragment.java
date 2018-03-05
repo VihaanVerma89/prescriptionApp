@@ -1,5 +1,6 @@
 package com.pharmeasy.ui.prescription;
 
+import android.app.ProgressDialog;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -13,6 +14,7 @@ import android.widget.Toast;
 
 import com.pharmeasy.R;
 import com.pharmeasy.models.Prescription;
+import com.pharmeasy.utils.ActivityUtils;
 
 /**
  * Created by vihaanverma on 03/03/18.
@@ -45,6 +47,7 @@ public class PrescriptionFragment extends Fragment implements PrescriptionContra
 
     private EditText  mNameET, mDetailET;
     private Button mSaveBTN;
+    private ProgressDialog mProgressDialog;
     private void initViews() {
         mNameET = getView().findViewById(R.id.nameET);
         mDetailET= getView().findViewById(R.id.detailET);
@@ -55,12 +58,14 @@ public class PrescriptionFragment extends Fragment implements PrescriptionContra
     @Override
     public void onPrescriptionAdded(Prescription prescription) {
         Toast.makeText(getActivity(), "Prescription added successfully!", Toast.LENGTH_SHORT).show();
+        ActivityUtils.hideProgressDialog(mProgressDialog);
         getActivity().finish();
     }
 
     @Override
     public void onPrescriptionException(Throwable exception) {
         Toast.makeText(getActivity(), exception.getMessage(), Toast.LENGTH_SHORT).show();
+        ActivityUtils.hideProgressDialog(mProgressDialog);
     }
 
     private PrescriptionContract.Presenter mPresenter;
@@ -84,6 +89,8 @@ public class PrescriptionFragment extends Fragment implements PrescriptionContra
         String detail= mDetailET.getText().toString();
         if(!TextUtils.isEmpty(name) && !TextUtils.isEmpty(detail))
         {
+            mProgressDialog = new ProgressDialog(getActivity());
+            ActivityUtils.showProgressDialog(mProgressDialog);
             Prescription prescription = new Prescription(name, detail);
             mPresenter.addPrescription(prescription);
         }
