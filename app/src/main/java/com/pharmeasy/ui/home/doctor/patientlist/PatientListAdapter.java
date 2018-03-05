@@ -63,13 +63,12 @@ class PatientListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     public class PatientViewHolder extends RecyclerView.ViewHolder implements View
             .OnClickListener {
 
-        private TextView name, prescriptionCount;
+        private TextView name;
         private Button requestBtn;
 
         public PatientViewHolder(View itemView) {
             super(itemView);
             name = itemView.findViewById(R.id.nameTV);
-            prescriptionCount = itemView.findViewById(R.id.prescriptionCountTV);
             requestBtn = itemView.findViewById(R.id.requestBTN);
             requestBtn.setOnClickListener(this);
         }

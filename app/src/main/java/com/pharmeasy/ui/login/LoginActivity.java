@@ -37,4 +37,10 @@ public class LoginActivity extends AppCompatActivity {
         mPresenter = new LoginPresenter(LoginRepository.getInstance(), mLoginFragment);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
     }
+
+    @Override
+    public boolean onSupportNavigateUp() {
+        onBackPressed();
+        return true;
+    }
 }
