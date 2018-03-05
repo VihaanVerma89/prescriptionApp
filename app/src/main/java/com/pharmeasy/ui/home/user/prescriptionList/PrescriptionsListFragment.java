@@ -15,8 +15,13 @@ import android.widget.Toast;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.pharmeasy.R;
+import com.pharmeasy.models.Doctor;
 import com.pharmeasy.models.Prescription;
+import com.pharmeasy.models.User;
 import com.pharmeasy.ui.prescription.PrescriptionActivity;
+import com.pharmeasy.utils.SessionUtil;
+
+import org.parceler.Parcels;
 
 import java.util.ArrayList;
 
@@ -28,12 +33,12 @@ public class PrescriptionsListFragment extends Fragment implements PrescriptionL
         View
         .OnClickListener{
 
-    public static PrescriptionsListFragment newInstance() {
+    public static final String EXTRA_USER= "user";
+    private User mUser;
 
-        Bundle args = new Bundle();
-
+    public static PrescriptionsListFragment newInstance(Bundle bundle) {
         PrescriptionsListFragment fragment = new PrescriptionsListFragment();
-        fragment.setArguments(args);
+        fragment.setArguments(bundle);
         return fragment;
     }
 
@@ -61,6 +66,11 @@ public class PrescriptionsListFragment extends Fragment implements PrescriptionL
     private void initFab(){
         mFab = getView().findViewById(R.id.addPrescriptionFab);
         mFab.setOnClickListener(this);
+        Doctor doctor = SessionUtil.getLoggedInDoctor(getContext());
+        if(doctor!=null)
+        {
+            mFab.setVisibility(View.GONE);
+        }
     }
 
     private RecyclerView mRecyclerView;
@@ -74,10 +84,16 @@ public class PrescriptionsListFragment extends Fragment implements PrescriptionL
     }
 
     private void loadPrescriptions(){
-        FirebaseUser currentUser= FirebaseAuth.getInstance().getCurrentUser();
-        if(currentUser!=null)
+//        FirebaseUser currentUser= FirebaseAuth.getInstance().getCurrentUser();
+//        if(currentUser!=null)
+//        {
+//            mPresenter.loadPrescription(currentUser.getUid());
+//        }
+        Bundle bundle = getArguments();
+        if(bundle!=null)
         {
-            mPresenter.loadPrescription(currentUser.getUid());
+            mUser = Parcels.unwrap(bundle.getParcelable(EXTRA_USER));
+            mPresenter.loadPrescription(mUser.getUid());
         }
     }
     @Override

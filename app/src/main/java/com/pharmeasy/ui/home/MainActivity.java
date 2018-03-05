@@ -145,7 +145,7 @@ public class MainActivity extends AppCompatActivity {
 
     private List<Fragment> getUserFragments() {
         PrescriptionsListFragment prescriptionsListFragment = PrescriptionsListFragment
-                .newInstance();
+                .newInstance(getIntent().getExtras());
         mFragments.add(prescriptionsListFragment);
 
         PrescriptionRequestsFragment prescriptionRequestsFragment = PrescriptionRequestsFragment.newInstance();

@@ -37,12 +37,10 @@ public class PrescriptionListRepository {
                     @Override
                     public void subscribe(FlowableEmitter<Prescription> emitter) throws Exception {
 
-                        FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
-                        if (currentUser != null) {
 
                             Query child = FirebaseDatabase.getInstance().getReference()
                                     .child(Tables.USERS_PRESCRIPTIONS)
-                                    .child(currentUser.getUid())
+                                    .child(uuid)
                                     .orderByKey();
 
                             child.addChildEventListener(new ChildEventListener() {
@@ -75,10 +73,7 @@ public class PrescriptionListRepository {
                                     emitter.onError(databaseError.toException());
                                 }
                             });
-                        }
-                        else {
-                            emitter.onError(new Exception("User not logged in."));
-                        }
+
                     }
                 }, BackpressureStrategy.BUFFER);
 

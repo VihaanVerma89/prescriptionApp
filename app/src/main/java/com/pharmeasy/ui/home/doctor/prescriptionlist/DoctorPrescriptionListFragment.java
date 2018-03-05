@@ -1,5 +1,6 @@
 package com.pharmeasy.ui.home.doctor.prescriptionlist;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.print.PrintDocumentAdapter;
 import android.support.annotation.Nullable;
@@ -13,6 +14,10 @@ import android.widget.Toast;
 
 import com.pharmeasy.R;
 import com.pharmeasy.models.User;
+import com.pharmeasy.ui.home.doctor.prescriptionlist.patientPrescipitonList.PatientPrescriptionListActivity;
+import com.pharmeasy.ui.home.user.prescriptionList.PrescriptionsListFragment;
+
+import org.parceler.Parcels;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -25,7 +30,6 @@ public class DoctorPrescriptionListFragment extends Fragment  implements
         DoctorPrescriptionListContract.View , DoctorPrescriptionListAdapter.PatientListener{
 
     public static DoctorPrescriptionListFragment newInstance() {
-
         Bundle args = new Bundle();
 
         DoctorPrescriptionListFragment fragment = new DoctorPrescriptionListFragment();
@@ -84,7 +88,12 @@ public class DoctorPrescriptionListFragment extends Fragment  implements
 
     @Override
     public void onPatientClicked(int position) {
-
+        User user = mPatients.get(position);
+        Intent intent = new Intent(getActivity(), PatientPrescriptionListActivity.class);
+        Bundle bundle = new Bundle();
+        bundle.putParcelable(PrescriptionsListFragment.EXTRA_USER, Parcels.wrap(user));
+        intent.putExtras(bundle);
+        startActivity(intent);
     }
 
     @Override
